@@ -69,7 +69,11 @@ export async function POST(req: NextRequest) {
                 });
                 const rawGetUrl = await getSignedUrl(client, getCmd, { expiresIn: 3600 });
                 const getUrlObj = new URL(rawGetUrl);
-                const proxyGetUrl = "/s3-proxy" + getUrlObj.pathname + getUrlObj.search;
+                
+                // Encode endpoint to pass it to the proxy
+                const encodedEndpoint = Buffer.from(payload.endpoint).toString('base64url');
+                const proxyGetUrl = `/s3-proxy/${encodedEndpoint}${getUrlObj.pathname}${getUrlObj.search}`;
+                
                 result = { url: proxyGetUrl };
                 break;
 

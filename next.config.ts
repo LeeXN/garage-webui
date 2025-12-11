@@ -16,10 +16,7 @@ const nextConfig: NextConfig = {
   },
   async rewrites() {
     return [
-      {
-        source: '/s3-proxy/:path*',
-        destination: process.env.S3_API_ENDPOINT ? `${process.env.S3_API_ENDPOINT}/:path*` : 'http://localhost:3900/:path*', // Proxy to S3
-      },
+      // Rewrite removed in favor of dynamic route handler in src/app/s3-proxy/[...path]/route.ts
     ]
   },
 };
