@@ -2,6 +2,13 @@
 
 A modern, feature-rich Web UI for [Garage S3](https://garagehq.deuxfleurs.fr/), built with Next.js.
 
+> **Compatibility Note:**
+>
+> Currently, we support **[Garage v2.1.0](https://git.deuxfleurs.fr/Deuxfleurs/garage/releases/tag/v2.1.0)**.
+>
+> The `main` branch will always track the latest stable version of Garage. Historical versions will be preserved via git tags, like `v2.1.0-20251211`.
+
+
 ## Quick Start
 
 ### Using Docker
@@ -19,10 +26,13 @@ docker pull leex2019/garage-webui:latest
 Run the container:
 
 ```bash
-docker run -p 3000:3000 \
+docker run -itd \
+  --name garage-webui \
+  -p 3000:3000 \
   -e GARAGE_API_BASE_URL="http://your-garage-endpoint:3903" \
   -e GARAGE_ADMIN_TOKEN="your-admin-token" \
   -e S3_API_ENDPOINT="http://your-garage-endpoint:3900" \
+  -e SHARE_ENCRYPTION_SECRET="$(openssl rand -base64 32)" \
   leex2019/garage-webui:latest
 ```
 
@@ -40,6 +50,7 @@ docker run -p 3000:3000 \
    export GARAGE_API_BASE_URL="http://your-garage-endpoint:3903"
    export GARAGE_ADMIN_TOKEN="your-admin-token"
    export S3_API_ENDPOINT="http://your-garage-endpoint:3900"
+   export SHARE_ENCRYPTION_SECRET=$(openssl rand -base64 32)
    # then
    make dev
    # or
@@ -57,6 +68,7 @@ The application can be configured using environment variables:
 | `GARAGE_ADMIN_TOKEN` | The admin token for your Garage instance. Required for Admin features. | Yes (for Admin) |
 | `GARAGE_API_BASE_URL` | The URL of your Garage Admin API (e.g., `http://localhost:3903`). | Yes |
 | `S3_API_ENDPOINT` | The S3 API endpoint (e.g., `http://localhost:3900`). Used for proxying S3 requests. | Yes |
+| `SHARE_ENCRYPTION_SECRET` | A secret string used to encrypt share tokens. Should be a long, random string. | No (Defaults to dev secret) |
 
 ## Features
 
